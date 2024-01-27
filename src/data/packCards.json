@@ -1,0 +1,80 @@
+{
+  "data": {
+    "backs": {
+      "abstract_clouds": "/src/data/svg_playing_cards/backs/abstract_clouds.svg",
+      "abstract_scene": "/src/data/svg_playing_cards/backs/abstract_scene.svg",
+      "astronaut": "/src/data/svg_playing_cards/backs/astronaut.svg",
+      "blue": "/src/data/svg_playing_cards/backs/blue.svg",
+      "cars": "/src/data/svg_playing_cards/backs/cars.svg",
+      "fish": "/src/data/svg_playing_cards/backs/fish.svg",
+      "frog": "/src/data/svg_playing_cards/backs/frog.svg",
+      "red": "/src/data/svg_playing_cards/backs/red.svg"
+    },
+    "fronts": {
+      "clubs": {
+        "two": "/src/data/svg_playing_cards/fronts/clubs_2.svg",
+        "three": "/src/data/svg_playing_cards/fronts/clubs_3.svg",
+        "four": "/src/data/svg_playing_cards/fronts/clubs_4.svg",
+        "five": "/src/data/svg_playing_cards/fronts/clubs_5.svg",
+        "six": "/src/data/svg_playing_cards/fronts/clubs_6.svg",
+        "seven": "/src/data/svg_playing_cards/fronts/clubs_7.svg",
+        "eight": "/src/data/svg_playing_cards/fronts/clubs_8.svg",
+        "nine": "/src/data/svg_playing_cards/fronts/clubs_9.svg",
+        "ten": "/src/data/svg_playing_cards/fronts/clubs_10.svg",
+        "ace": "/src/data/svg_playing_cards/fronts/clubs_ace.svg",
+        "jack": "/src/data/svg_playing_cards/fronts/clubs_jack.svg",
+        "king": "/src/data/svg_playing_cards/fronts/clubs_king.svg",
+        "queen": "/src/data/svg_playing_cards/fronts/clubs_queen.svg"
+      },
+      "diamonds": {
+        "two": "/src/data/svg_playing_cards/fronts/diamonds_2.svg",
+        "three": "/src/data/svg_playing_cards/fronts/diamonds_3.svg",
+        "four": "/src/data/svg_playing_cards/fronts/diamonds_4.svg",
+        "five": "/src/data/svg_playing_cards/fronts/diamonds_5.svg",
+        "six": "/src/data/svg_playing_cards/fronts/diamonds_6.svg",
+        "seven": "/src/data/svg_playing_cards/fronts/diamonds_7.svg",
+        "eight": "/src/data/svg_playing_cards/fronts/diamonds_8.svg",
+        "nine": "/src/data/svg_playing_cards/fronts/diamonds_9.svg",
+        "ten": "/src/data/svg_playing_cards/fronts/diamonds_10.svg",
+        "ace": "/src/data/svg_playing_cards/fronts/diamonds_ace.svg",
+        "jack": "/src/data/svg_playing_cards/fronts/diamonds_jack.svg",
+        "king": "/src/data/svg_playing_cards/fronts/diamonds_king.svg",
+        "queen": "/src/data/svg_playing_cards/fronts/diamonds_queen.svg"
+      },
+      "hearts": {
+        "two": "/src/data/svg_playing_cards/fronts/hearts_2.svg",
+        "three": "/src/data/svg_playing_cards/fronts/hearts_3.svg",
+        "four": "/src/data/svg_playing_cards/fronts/hearts_4.svg",
+        "five": "/src/data/svg_playing_cards/fronts/hearts_5.svg",
+        "six": "/src/data/svg_playing_cards/fronts/hearts_6.svg",
+        "seven": "/src/data/svg_playing_cards/fronts/hearts_7.svg",
+        "eight": "/src/data/svg_playing_cards/fronts/hearts_8.svg",
+        "nine": "/src/data/svg_playing_cards/fronts/hearts_9.svg",
+        "ten": "/src/data/svg_playing_cards/fronts/hearts_10.svg",
+        "ace": "/src/data/svg_playing_cards/fronts/hearts_ace.svg",
+        "jack": "/src/data/svg_playing_cards/fronts/hearts_jack.svg",
+        "king": "/src/data/svg_playing_cards/fronts/hearts_king.svg",
+        "queen": "/src/data/svg_playing_cards/fronts/hearts_queen.svg"
+      },
+      "spades": {
+        "two": "/src/data/svg_playing_cards/fronts/spades_2.svg",
+        "three": "/src/data/svg_playing_cards/fronts/spades_3.svg",
+        "four": "/src/data/svg_playing_cards/fronts/spades_4.svg",
+        "five": "/src/data/svg_playing_cards/fronts/spades_5.svg",
+        "six": "/src/data/svg_playing_cards/fronts/spades_6.svg",
+        "seven": "/src/data/svg_playing_cards/fronts/spades_7.svg",
+        "eight": "/src/data/svg_playing_cards/fronts/spades_8.svg",
+        "nine": "/src/data/svg_playing_cards/fronts/spades_9.svg",
+        "ten": "/src/data/svg_playing_cards/fronts/spades_10.svg",
+        "ace": "/src/data/svg_playing_cards/fronts/spades_ace.svg",
+        "jack": "/src/data/svg_playing_cards/fronts/spades_jack.svg",
+        "king": "/src/data/svg_playing_cards/fronts/spades_king.svg",
+        "queen": "/src/data/svg_playing_cards/fronts/spades_queen.svg"
+      },
+      "jokers": {
+        "black": "/src/data/svg_playing_cards/fronts/joker_black.svg",
+        "red": "/src/data/svg_playing_cards/fronts/joker_red.svg"
+      }
+    }
+  }
+}
