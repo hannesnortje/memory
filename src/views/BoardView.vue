@@ -9,12 +9,18 @@
         <p>Player 2: {{ player2Name }}</p>
       </div>
     </section>
-    <div class="card-container">
-      <div v-for="(value, index) in subDeckFaces" :key="index">
-        <p>          
-          <PlayingCard :svg-back="backFace" :alt-back="backName" :svg-front="value" :alt-front="subDeckNames[index]" class="playing-card" @card-turned="cardIsTurned"/>
-        </p>
-      </div>
+    <div class="card-container">        
+      <PlayingCard
+        v-for="(value, index) in subDeckFaces" :key="index"
+        ref="playingCards"
+        :svg-back="backFace"
+        :alt-back="backName"
+        :svg-front="value"
+        :alt-front="subDeckNames[index]"
+        class="playing-card"
+        @card2Turn="card2Turn"
+        :place-number="index"
+        />
     </div>
     <StartDialog v-if="controlDialoge" @close-event="closeStartDialog" @start-event="startGame"/>
   </div>
@@ -25,6 +31,7 @@ import PlayingCard from '@/components/PlayingCard.vue';
 import StartDialog from '@/components/StartDialog.vue'
 import { useCardStore } from '@/stores/useCardStore';
 import { onMounted, ref } from 'vue'
+import { useTimeoutFn } from '@vueuse/core'
 
 const controlDialoge = ref()
 const player1Name = ref()
@@ -38,15 +45,36 @@ const subDeckFaces = ref([]);
 const backName = ref();
 const backFace = ref();
 
-const cardIsTurned = (altFront: string)=>{
-  let card = null;
-  if(!card){
-    card = altFront;
-  } else {
-    if(card === altFront){
-      ;
+const playingCards = ref();
+
+let doubleCards = {
+  firstAlt: '',
+  firstPlace: -1,
+  secondAlt: false,
+};
+
+const clearCards = () => {
+  doubleCards.firstAlt = '';
+  doubleCards.firstPlace = -1;
+  doubleCards.secondAlt = false;
+}
+
+const card2Turn = (altFront: string, placeNumber: number)=>{
+  if(doubleCards.firstAlt === ''){
+    doubleCards.firstAlt = altFront;
+    doubleCards.firstPlace = placeNumber
+    playingCards.value[placeNumber].turnCard();
+  } else if(!doubleCards.secondAlt) {
+    doubleCards.secondAlt = true;
+    playingCards.value[placeNumber].turnCard();
+    if(doubleCards.firstAlt === altFront){
+      clearCards();
     } else {
-      
+      const { isPending, start, stop } = useTimeoutFn(() => {
+        playingCards.value[placeNumber].turnBack();
+        playingCards.value[doubleCards.firstPlace].turnBack();
+        clearCards();
+      }, 3000)
     }
   }
 }

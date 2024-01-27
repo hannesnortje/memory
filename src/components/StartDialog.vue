@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, ref } from 'vue'
+import { ref } from 'vue'
 import validations from "@/miscellaneous/validations.js"
 import { useCardStore } from '@/stores/useCardStore';
 import CardSlider from './CardSlider.vue';

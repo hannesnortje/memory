@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img :src="svgMarkup" :alt="svgAlt" @click="turnCard()"/>
+        <img :src="svgMarkup" :alt="svgAlt" @click="$emit('card2Turn', props.altFront, props.placeNumber);"/>
     </div>
 </template>
 
@@ -25,24 +25,30 @@ const props = defineProps({
         type: String,
         required: true,
         default: "SVG Image Back"
+    },
+    placeNumber: {
+        type: Number,
+        required: true
     }
 });
 
 const svgMarkup = ref(props.svgBack);
 const svgAlt = ref(props.altBack);
 
-let isTurned = false;
-
-const emits = defineEmits(['cardTurned']);
-
 const turnCard = () => {
-    if (!isTurned){
         svgMarkup.value = props.svgFront;
-        svgAlt.value = props.altFront
-        isTurned = false;
-        emits('cardTurned', props.altFront);
-    }
+        svgAlt.value = props.altFront;
 }
+
+const turnBack = ()=>{
+    svgMarkup.value = props.svgBack;
+    svgAlt.value = props.altBack;
+}
+
+defineExpose({
+    turnCard,
+    turnBack,
+})
 
 </script>
 
