@@ -50,13 +50,13 @@ const playingCards = ref();
 let doubleCards = {
   firstAlt: '',
   firstPlace: -1,
-  secondAlt: false,
+  secondCard: false,
 };
 
 const clearCards = () => {
   doubleCards.firstAlt = '';
   doubleCards.firstPlace = -1;
-  doubleCards.secondAlt = false;
+  doubleCards.secondCard = false;
 }
 
 const card2Turn = (altFront: string, placeNumber: number)=>{
@@ -64,8 +64,8 @@ const card2Turn = (altFront: string, placeNumber: number)=>{
     doubleCards.firstAlt = altFront;
     doubleCards.firstPlace = placeNumber
     playingCards.value[placeNumber].turnCard();
-  } else if(!doubleCards.secondAlt) {
-    doubleCards.secondAlt = true;
+  } else if(!doubleCards.secondCard) {
+    doubleCards.secondCard = true;
     playingCards.value[placeNumber].turnCard();
     if(doubleCards.firstAlt === altFront){
       clearCards();
