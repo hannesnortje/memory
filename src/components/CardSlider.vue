@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUpdated, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const props = defineProps({
   cards: {

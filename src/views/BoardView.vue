@@ -1,14 +1,6 @@
 <template>
   <div>
-    <section class="flex-section">
-      <div>
-        <h2>Players</h2>
-      </div>
-      <div class="flex-playbox">
-        <p>Player 1: {{ player1Name }}</p>
-        <p>Player 2: {{ player2Name }}</p>
-      </div>
-    </section>
+    <PlayerInterface :player1-name="player1Name" :player2-name="player2Name" :number-cards="numberCards"/>
     <div class="card-container">        
       <PlayingCard
         v-for="(value, index) in subDeckFaces" :key="index"
@@ -32,11 +24,12 @@ import StartDialog from '@/components/StartDialog.vue'
 import { useCardStore } from '@/stores/useCardStore';
 import { onMounted, ref } from 'vue'
 import { useTimeoutFn } from '@vueuse/core'
+import PlayerInterface from '@/components/PlayerInterface.vue';
 
 const controlDialoge = ref()
 const player1Name = ref()
 const player2Name = ref()
-let numberCards: number;
+const numberCards = ref();
 let wholeDeck;
 let subDeckIndexes;
 const subDeckNames = ref([]);
@@ -89,8 +82,8 @@ const closeStartDialog = () => {
 
 const insertCards = ()=>{
   wholeDeck = useCardStore().getDeck();
-  subDeckIndexes = useCardStore().getSupDeckIndexs(numberCards);
-  for(let i = 0; i < numberCards; i++){
+  subDeckIndexes = useCardStore().getSupDeckIndexs(numberCards.value);
+  for(let i = 0; i < numberCards.value; i++){
     for(let [key, value] of Object.entries(wholeDeck[subDeckIndexes[i]])){
       subDeckNames.value.push(key);
       subDeckFaces.value.push(value);
@@ -101,7 +94,7 @@ const insertCards = ()=>{
 const startGame = (plr1Name: string, plr2Name: string, numSize: number, choice4Back) => {
   player1Name.value = plr1Name
   player2Name.value = plr2Name
-  numberCards = numSize;
+  numberCards.value = numSize;
   backName.value = Object.keys(choice4Back)[0];
   backFace.value = Object.values(choice4Back)[0];
   closeStartDialog();
@@ -110,22 +103,6 @@ const startGame = (plr1Name: string, plr2Name: string, numSize: number, choice4B
 </script>
 
 <style scoped>
-.flex-section {
-  display: flex;
-  flex-direction: column;
-}
-h2 {
-  text-align: center;
-  text-decoration: underline;
-  text-underline-offset: 0.5rem;
-  font-weight: 700;
-}
-.flex-playbox {
-  display: flex;
-  flex: 1;
-  justify-content: space-around;
-}
-
 .card-container {
   display: flex;
   flex-wrap: wrap;
