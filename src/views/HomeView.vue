@@ -1,18 +1,39 @@
 <template>
-  <main>
-    <p>
-      Welcome to Memory. Click the following link to start a game, alternatively use the menu above
-    </p>
-    <button @click="navigateToBoard">Start a Game</button>
+  <main class="flex">
+    <div class="flex">
+      <h2>
+        Welcome to Memory. Click the following link to start a game, alternatively use the menu
+        above
+      </h2>
+      <button @click="navigateToBoard" class="btn">Start a Game</button>
+    </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 
 const navigateToBoard = () => {
-  router.push('/board')
-}
+  router.push('/board');
+};
 </script>
+
+<style scoped>
+main {
+  min-height: 75vh;
+}
+
+.flex {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn {
+  margin: 3rem;
+}
+</style>

@@ -2,7 +2,10 @@
 <template>
   <div class="overlay">
     <div class="dialog">
-      <p>Congratulations {{ winner }} you won with a score of {{ score }}!!!!</p>
+      <p v-if="numberOfPlayers > 1">
+        Congratulations {{ winner }} you won with a score of {{ score }}!!!!
+      </p>
+      <p v-else>Congratulations {{ winner }} you complete this round!!!!</p>
       <button @click="nextStep('playAgain')">Play Again</button>
       <button @click="nextStep('startOver')">Start All Over</button>
     </div>
@@ -10,26 +13,29 @@
 </template>
 
 <script setup lang="ts">
-
 const props = defineProps({
   winner: {
     type: String,
     required: true,
-    default: ""
+    default: ''
   },
   score: {
     type: Number,
     required: true,
     default: 0
+  },
+  numberOfPlayers: {
+    type: Number,
+    required: true,
+    default: 1
   }
-})
+});
 
 const emits = defineEmits(['nextStep']);
 
 const nextStep = (step: string) => {
   emits('nextStep', step);
-}
-
+};
 </script>
 
 <style scoped>
@@ -52,7 +58,7 @@ const nextStep = (step: string) => {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.font-red{
+.font-red {
   color: red;
 }
 </style>

@@ -3,7 +3,7 @@
   <div class="overlay">
     <div class="dialog">
       <div>
-        <h1>Welcome to the Game!</h1>
+        <h2>Welcome to Memory!</h2>
         <label>
           Number of players:
           <select v-model="numberOfPlayers">
@@ -33,7 +33,7 @@
         <div>
           <label>
             Please give a even number min 10 and max 50 for size of game:
-            <input type="number" v-model.number="numSize" @change="error = false"/>
+            <input type="number" v-model.number="numSize" @change="error = false" />
             <p v-if="error" class="font-red">Error: {{ numSize }} out of bounds</p>
           </label>
         </div>
@@ -50,42 +50,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import validations from "@/miscellaneous/validations.js"
+import { ref } from 'vue';
+import validations from '@/miscellaneous/validations.js';
 import { useCardStore } from '@/stores/useCardStore';
 import CardSlider from './CardSlider.vue';
 
-const numberOfPlayers = ref('1')
-const player1Name = ref('')
-const player2Name = ref('')
+const numberOfPlayers = ref('1');
+const player1Name = ref('');
+const player2Name = ref('');
 const numSize = ref(20);
 const error = ref(false);
-const choice4Back = ref({"astronaut": "/src/data/svg_playing_cards/backs/astronaut.svg"});
+const choice4Back = ref({ astronaut: '/src/data/svg_playing_cards/backs/astronaut.svg' });
 
-const chosenBack = (value)=> {  
+const chosenBack = (value) => {
   choice4Back.value = value;
-} 
+};
 
 const emits = defineEmits(['closeEvent', 'startEvent']);
 
-const validate = ()=>{
-  if (validations.checkDeckSize(numSize.value)){
+const validate = () => {
+  if (validations.checkDeckSize(numSize.value)) {
     error.value = true;
     return false;
   }
   return true;
-}
+};
 
 const startGame = () => {
-  if(validate()){
-    emits('startEvent', player1Name.value, player2Name.value, numSize.value, choice4Back.value)
-  } 
-    
-}
+  if (validate()) {
+    emits(
+      'startEvent',
+      player1Name.value,
+      player2Name.value,
+      numSize.value,
+      choice4Back.value,
+      numberOfPlayers.value
+    );
+  }
+};
 
 const close = () => {
-  emits('closeEvent')
-}
+  emits('closeEvent');
+};
 </script>
 
 <style scoped>
@@ -108,7 +114,7 @@ const close = () => {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.font-red{
+.font-red {
   color: red;
 }
 </style>

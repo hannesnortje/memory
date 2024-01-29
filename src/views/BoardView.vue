@@ -6,6 +6,7 @@
       :number-cards="numberCards"
       @the-winner="theWinner"
       ref="playerInterface"
+      :number-of-players="numberOfPlayers"
     />
     <div class="card-container">
       <PlayingCard
@@ -28,138 +29,146 @@
 </template>
 
 <script setup lang="ts">
-import PlayingCard from '@/components/PlayingCard.vue'
-import StartDialog from '@/components/StartDialog.vue'
-import { useCardStore } from '@/stores/useCardStore'
-import { onMounted, ref, type Ref } from 'vue'
-import { useTimeoutFn } from '@vueuse/core'
-import PlayerInterface from '@/components/PlayerInterface.vue'
-import EndDialog from '@/components/EndDialog.vue'
+import PlayingCard from '@/components/PlayingCard.vue';
+import StartDialog from '@/components/StartDialog.vue';
+import { useCardStore } from '@/stores/useCardStore';
+import { onMounted, ref, type Ref } from 'vue';
+import { useTimeoutFn } from '@vueuse/core';
+import PlayerInterface from '@/components/PlayerInterface.vue';
+import EndDialog from '@/components/EndDialog.vue';
 
 interface KeyValue {
-  [key: string]: string
+  [key: string]: string;
 }
 
-const controlDialoge = ref()
-const player1Name = ref('')
-const player2Name = ref('')
-const numberCards = ref(0)
-let wholeDeck: KeyValue[]
-let subDeckIndexes: number[] = []
-const subDeckNames: Ref<KeyValue[]> = ref([])
-const subDeckFaces: Ref<KeyValue[]> = ref([])
+const controlDialoge = ref();
+const player1Name = ref('');
+const player2Name = ref('');
+const numberCards = ref(0);
+let wholeDeck: KeyValue[];
+let subDeckIndexes: number[] = [];
+const subDeckNames: Ref<KeyValue[]> = ref([]);
+const subDeckFaces: Ref<KeyValue[]> = ref([]);
 
-const backName = ref()
-const backFace = ref()
+const backName = ref();
+const backFace = ref();
 
-const playerInterface = ref()
+const playerInterface = ref();
+const numberOfPlayers = ref();
 
-const playingCards = ref()
+const playingCards = ref();
 
-const winner = ref()
-const score = ref()
-const endDialog = ref(false)
+const winner = ref();
+const score = ref();
+const endDialog = ref(false);
 
-let delayCal = -2
+let delayCal = -2;
 
 const animationDelay = () => {
-  delayCal = delayCal + 0.2
-  return delayCal
-}
+  delayCal = delayCal + 0.2;
+  return delayCal;
+};
 
 const theWinner = (winnerName: string, winnerScore: number) => {
-  winner.value = winnerName
-  score.value = winnerScore
-  endDialog.value = true
-}
+  winner.value = winnerName;
+  score.value = winnerScore;
+  endDialog.value = true;
+};
 
 const clearBoard = () => {
-  delayCal = -2
-  playerInterface.value.playAgain()
+  delayCal = -2;
+  playerInterface.value.playAgain();
   playingCards.value.forEach((element) => {
-    element.turnCard()
-  })
-  subDeckIndexes.splice(0)
-  subDeckFaces.value.splice(0)
-  subDeckNames.value.splice(0)
-}
+    element.turnCard();
+  });
+  subDeckIndexes.splice(0);
+  subDeckFaces.value.splice(0);
+  subDeckNames.value.splice(0);
+};
 
 const nextStep = (step: string) => {
-  endDialog.value = false
-  clearBoard()
+  endDialog.value = false;
+  clearBoard();
   if (step === 'startOver') {
-    controlDialoge.value = true
+    controlDialoge.value = true;
   } else if (step === 'playAgain') {
-    insertCards()
+    insertCards();
   }
-}
+};
 
 let doubleCards = {
   firstAlt: '',
   firstPlace: -1,
   secondCard: false
-}
+};
 
 const atPlayerInterface = (correct = '') => {
-  doubleCards.firstAlt = ''
-  doubleCards.firstPlace = -1
-  doubleCards.secondCard = false
-  playerInterface.value.swapPlayers(correct)
-}
+  doubleCards.firstAlt = '';
+  doubleCards.firstPlace = -1;
+  doubleCards.secondCard = false;
+  playerInterface.value.swapPlayers(correct);
+};
 
 const timeOut = (number1: number, number2: number) => {
   const { isPending, start, stop } = useTimeoutFn(() => {
-    playingCards.value[number1].turnCard()
-    playingCards.value[number2].turnCard()
-    atPlayerInterface()
-  }, 3000)
-  start()
-}
+    playingCards.value[number1].turnCard();
+    playingCards.value[number2].turnCard();
+    atPlayerInterface();
+  }, 3000);
+  start();
+};
 
 const card2Turn = (altFront: string, placeNumber: number) => {
   if (doubleCards.firstAlt === '') {
-    doubleCards.firstAlt = altFront
-    doubleCards.firstPlace = placeNumber
-    playingCards.value[placeNumber].turnCard()
+    doubleCards.firstAlt = altFront;
+    doubleCards.firstPlace = placeNumber;
+    playingCards.value[placeNumber].turnCard();
   } else if (!doubleCards.secondCard) {
-    doubleCards.secondCard = true
-    playingCards.value[placeNumber].turnCard()
+    doubleCards.secondCard = true;
+    playingCards.value[placeNumber].turnCard();
     if (doubleCards.firstAlt === altFront) {
-      atPlayerInterface('correct')
+      atPlayerInterface('correct');
     } else {
-      timeOut(placeNumber, doubleCards.firstPlace)
+      timeOut(placeNumber, doubleCards.firstPlace);
     }
   }
-}
+};
 
 onMounted(() => {
-  wholeDeck = useCardStore().getDeck()
-  controlDialoge.value = true
-})
+  wholeDeck = useCardStore().getDeck();
+  controlDialoge.value = true;
+});
 
 const closeStartDialog = () => {
-  controlDialoge.value = false
-}
+  controlDialoge.value = false;
+};
 
 const insertCards = () => {
-  subDeckIndexes = useCardStore().getSupDeckIndexs(numberCards.value)
+  subDeckIndexes = useCardStore().getSupDeckIndexs(numberCards.value);
   for (let i = 0; i < numberCards.value; i++) {
     for (let [key, value] of Object.entries(wholeDeck[subDeckIndexes[i]])) {
-      subDeckNames.value.push(key as any)
-      subDeckFaces.value.push(value as any)
+      subDeckNames.value.push(key as any);
+      subDeckFaces.value.push(value as any);
     }
   }
-}
+};
 
-const startGame = (plr1Name: string, plr2Name: string, numSize: number, choice4Back) => {
-  player1Name.value = plr1Name
-  player2Name.value = plr2Name
-  numberCards.value = numSize
-  backName.value = Object.keys(choice4Back)[0]
-  backFace.value = Object.values(choice4Back)[0]
-  closeStartDialog()
-  insertCards()
-}
+const startGame = (
+  plr1Name: string,
+  plr2Name: string,
+  numSize: number,
+  choice4Back,
+  numberPlayers: number
+) => {
+  numberOfPlayers.value = numberPlayers;
+  player1Name.value = plr1Name;
+  player2Name.value = plr2Name;
+  numberCards.value = numSize;
+  backName.value = Object.keys(choice4Back)[0];
+  backFace.value = Object.values(choice4Back)[0];
+  closeStartDialog();
+  insertCards();
+};
 </script>
 
 <style scoped>
