@@ -1,4 +1,3 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { getAllCards, getAllBacks } from "@/composables/api/getApi.js"
 import { shuffleArray} from "@/composables/tools.js"

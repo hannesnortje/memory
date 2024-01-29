@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUpdated, ref } from 'vue';
+import { ref } from 'vue';
 import PlayerDisplay from './PlayerDisplay.vue';
 
 
@@ -71,8 +71,17 @@ const swapPlayers = (correct = "")=>{
   }    
 }
 
+const playAgain = ()=>{
+  rounds = 0;
+  player1Active.value = true;
+  player2Active.value = false;
+  player1Score.value = 0;
+  player2Score.value = 0;
+}
+
 defineExpose({
-  swapPlayers
+  swapPlayers,
+  playAgain
 })
 </script>
 

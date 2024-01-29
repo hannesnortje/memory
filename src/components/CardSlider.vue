@@ -5,8 +5,8 @@
         <div class="card-slider">
             <img src="/src/components/icons/arrow_back.svg" alt="Icon Back" @click="goBack">
             
-            <div class="card">
-                <img :src="cardFaces[currentIndex]" :alt="cardNames[currentIndex]"  @click="chooseCard"/>
+            <div class="card" v-element-hover="onHover">
+                <img :src="cardFaces[currentIndex]" :alt="cardNames[currentIndex]"  @click="chooseCard" ref="picture" :class="currentIndex === chosenIndex? 'chosen-boarder':''"/>
             </div>
             
             <img src="/src/components/icons/arrow_forward.svg" alt="Icon forward" @click="goForward">
@@ -17,18 +17,31 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { vElementHover } from '@vueuse/components'
 
 const props = defineProps({
   cards: {
     type: Object,
     required: true
   }
-})
+});
 
-const currentIndex = ref(0)
+const picture = ref();
+
+const onHover = (state: boolean)=>{  
+  if (state){
+    picture.value.style.transform = 'scale(1.2)';
+  } else {
+    picture.value.style.transform = 'scale(1)';
+  }
+}
+
+const currentIndex = ref(0);
 
 const cardNames = ref([]);
 const cardFaces = ref([]);
+
+let chosenIndex = ref();
 
 onMounted(()=>{
     for (const value of Object.values(props.cards)) {
@@ -55,7 +68,8 @@ const goBack = () => {
 const emits = defineEmits(['chosenCard']);
 
 const chooseCard = () => {
-    emits('chosenCard', props.cards[currentIndex.value]);
+  chosenIndex.value = currentIndex.value;
+  emits('chosenCard', props.cards[currentIndex.value]);
 }
 
 </script>
@@ -81,8 +95,9 @@ h3 {
 }
 
 .card img {
-  height: 100px;
+  height: 150px;
   width: auto;
+  padding: 0.5rem;
 }
 
 .border-around {
@@ -91,5 +106,9 @@ h3 {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.chosen-boarder {
+  border: 2px solid blue;  
 }
 </style>

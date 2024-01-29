@@ -4,6 +4,7 @@
       <header>
         <nav>
           <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/board">Start a Game</RouterLink>
           <RouterLink to="/about">About</RouterLink>
         </nav>
       </header>
