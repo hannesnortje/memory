@@ -1,17 +1,19 @@
 <template>
     <section class="flex-section">
-
         <div>
             <h2>Players</h2>
         </div>
         <div class="flex-playbox">
-            <p>Player 1: {{ player1Name }}</p>
-            <p>Player 2: {{ player2Name }}</p>
+            <span :class="{'active': player1Active}">Player 1: <PlayerDisplay :player-name="player1Name" :player-score="player1Score" :is-active="player1Active"/></span>
+            <span :class="{'active': player2Active}">Player 2: <PlayerDisplay :player-name="player2Name" :player-score="player2Score" :is-active="player2Active"/></span>
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
+import { onUpdated, ref } from 'vue';
+import PlayerDisplay from './PlayerDisplay.vue';
+
 
 const props = defineProps({
     player1Name : {
@@ -19,12 +21,58 @@ const props = defineProps({
         required: true,
     },
     player2Name: {
-        type: String
+        type: String,
+        default: ""
     },
     numberCards: {
         type: Number,
         required: true
     }
+})
+
+const player1Active = ref(true);
+const player2Active = ref(false);
+
+const player1Score = ref(0);
+const player2Score = ref(0);
+
+let rounds = 0;
+
+const emits = defineEmits(['theWinner'])
+
+const handleScore = (correct = "")=>{
+  if(correct === "correct"){
+    rounds++;
+    if(player1Active.value){
+      player1Score.value++;
+    } else {
+      player2Score.value++;
+    }
+    if (rounds === props.numberCards/2){
+      let winnerName;
+      let winnerScore;
+      if(player1Score.value > player2Score.value){
+        winnerName = props.player1Name;
+        winnerScore = player1Score.value;
+      } else {
+        winnerName = props.player2Name;
+        winnerScore = player2Score.value;
+      }
+      emits('theWinner', winnerName, winnerScore);
+    }
+  }
+  return true;
+}
+
+const swapPlayers = (correct = "")=>{
+  if(handleScore(correct)){
+    player1Active.value = !player1Active.value;
+    player2Active.value = !player2Active.value;
+  }    
+}
+
+defineExpose({
+  swapPlayers
 })
 </script>
 
@@ -43,5 +91,16 @@ h2 {
   display: flex;
   flex: 1;
   justify-content: space-around;
+}
+
+.active {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+span {
+  display: flex;
 }
 </style>

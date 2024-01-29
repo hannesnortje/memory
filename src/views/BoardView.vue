@@ -1,6 +1,11 @@
 <template>
   <div>
-    <PlayerInterface :player1-name="player1Name" :player2-name="player2Name" :number-cards="numberCards"/>
+    <PlayerInterface
+      :player1-name="player1Name"
+      :player2-name="player2Name"
+      :number-cards="numberCards"
+      @the-winner="theWinner"
+      ref="swapPlayers"/>
     <div class="card-container">        
       <PlayingCard
         v-for="(value, index) in subDeckFaces" :key="index"
@@ -9,12 +14,14 @@
         :alt-back="backName"
         :svg-front="value"
         :alt-front="subDeckNames[index]"
-        class="playing-card"
+        class="playing-card fade-in"
         @card2Turn="card2Turn"
         :place-number="index"
+        :animation-delay="animationDelay()"
         />
     </div>
     <StartDialog v-if="controlDialoge" @close-event="closeStartDialog" @start-event="startGame"/>
+    <EndDialog v-if="endDialog" :winner="winner" :score="score" @next-step="nextStep"/>
   </div>
 </template>
 
@@ -25,11 +32,12 @@ import { useCardStore } from '@/stores/useCardStore';
 import { onMounted, ref } from 'vue'
 import { useTimeoutFn } from '@vueuse/core'
 import PlayerInterface from '@/components/PlayerInterface.vue';
+import EndDialog from '@/components/EndDialog.vue';
 
 const controlDialoge = ref()
-const player1Name = ref()
-const player2Name = ref()
-const numberCards = ref();
+const player1Name = ref('')
+const player2Name = ref('')
+const numberCards = ref(0);
 let wholeDeck;
 let subDeckIndexes;
 const subDeckNames = ref([]);
@@ -38,7 +46,37 @@ const subDeckFaces = ref([]);
 const backName = ref();
 const backFace = ref();
 
+const swapPlayers = ref();
+
 const playingCards = ref();
+
+const winner = ref();
+const score = ref();
+const endDialog = ref(false);
+
+let delayCal = -2;
+
+const animationDelay = ()=>{
+  delayCal = delayCal + 0.2;
+  return delayCal;
+}
+
+const theWinner = (winnerName: string, winnerScore: number)=>{
+  winner.value = winnerName;
+  score.value = winnerScore;
+  endDialog.value = true;
+}
+
+const nextStep = (step: string)=>{
+  endDialog.value = false;
+  if(step === "playAgain"){
+    
+    insertCards();
+  } else if (step === "startOver"){
+    closeStartDialog();
+    insertCards();
+  }
+}
 
 let doubleCards = {
   firstAlt: '',
@@ -46,10 +84,20 @@ let doubleCards = {
   secondCard: false,
 };
 
-const clearCards = () => {
+const atSwapPlayers = (correct="") => {
   doubleCards.firstAlt = '';
   doubleCards.firstPlace = -1;
   doubleCards.secondCard = false;
+  swapPlayers.value.swapPlayers(correct);
+}
+
+const timeOut = (number1: number, number2:number)=>{
+  const { isPending, start, stop } = useTimeoutFn(() => {
+        playingCards.value[number1].turnCard();
+        playingCards.value[number2].turnCard();
+        atSwapPlayers();
+      }, 3000)
+  start();
 }
 
 const card2Turn = (altFront: string, placeNumber: number)=>{
@@ -61,13 +109,9 @@ const card2Turn = (altFront: string, placeNumber: number)=>{
     doubleCards.secondCard = true;
     playingCards.value[placeNumber].turnCard();
     if(doubleCards.firstAlt === altFront){
-      clearCards();
+      atSwapPlayers("correct");
     } else {
-      const { isPending, start, stop } = useTimeoutFn(() => {
-        playingCards.value[placeNumber].turnBack();
-        playingCards.value[doubleCards.firstPlace].turnBack();
-        clearCards();
-      }, 3000)
+      timeOut(placeNumber, doubleCards.firstPlace);
     }
   }
 }
@@ -114,4 +158,9 @@ const startGame = (plr1Name: string, plr2Name: string, numSize: number, choice4B
   object-fit: cover;  
   height: auto;
 } 
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
 </style>
