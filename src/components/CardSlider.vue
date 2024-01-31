@@ -1,40 +1,45 @@
 <template>
-    <div class="border-around">
+  <div class="border-around">
+    <h3>Choose Back Image</h3>
+    <div class="card-slider">
+      <img src="/src/components/icons/arrow_back.svg" alt="Icon Back" @click="goBack" />
 
-        <h3>Choose Back Image</h3>
-        <div class="card-slider">
-            <img src="/src/components/icons/arrow_back.svg" alt="Icon Back" @click="goBack">
-            
-            <div class="card" v-element-hover="onHover">
-                <img :src="cardFaces[currentIndex]" :alt="cardNames[currentIndex]"  @click="chooseCard" ref="picture" :class="currentIndex === chosenIndex? 'chosen-boarder':''"/>
-            </div>
-            
-            <img src="/src/components/icons/arrow_forward.svg" alt="Icon forward" @click="goForward">
-            
-        </div>
+      <div class="card" v-element-hover="onHover">
+        <img
+          :src="cardFaces[currentIndex]"
+          :alt="cardNames[currentIndex]"
+          @click="chooseCard"
+          ref="picture"
+          :class="currentIndex === chosenIndex ? 'chosen-boarder' : ''"
+        />
+      </div>
+
+      <img src="/src/components/icons/arrow_forward.svg" alt="Icon forward" @click="goForward" />
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { vElementHover } from '@vueuse/components'
+import { onMounted, ref } from 'vue';
+import { vElementHover } from '@vueuse/components';
 
 const props = defineProps({
   cards: {
     type: Object,
-    required: true
+    required: true,
+    default: {}
   }
 });
 
 const picture = ref();
 
-const onHover = (state: boolean)=>{  
-  if (state){
+const onHover = (state: boolean) => {
+  if (state) {
     picture.value.style.transform = 'scale(1.2)';
   } else {
     picture.value.style.transform = 'scale(1)';
   }
-}
+};
 
 const currentIndex = ref(0);
 
@@ -43,41 +48,38 @@ const cardFaces = ref([]);
 
 let chosenIndex = ref();
 
-onMounted(()=>{
-    for (const value of Object.values(props.cards)) {
-        for (const [k, v] of Object.entries(value)){
-            cardNames.value.push(k);
-            cardFaces.value.push(v);
-        }
-    } 
-
-})
+onMounted(() => {
+  for (const value of Object.values(props.cards)) {
+    for (const [k, v] of Object.entries(value)) {
+      cardNames.value.push(k);
+      cardFaces.value.push(v);
+    }
+  }
+});
 
 const goForward = () => {
   if (currentIndex.value < props.cards.length - 1) {
-    currentIndex.value++
+    currentIndex.value++;
   }
-}
+};
 
 const goBack = () => {
   if (currentIndex.value > 0) {
-    currentIndex.value--
+    currentIndex.value--;
   }
-}
+};
 
 const emits = defineEmits(['chosenCard']);
 
 const chooseCard = () => {
   chosenIndex.value = currentIndex.value;
   emits('chosenCard', props.cards[currentIndex.value]);
-}
-
+};
 </script>
 
 <style scoped>
-
 h3 {
-    padding-bottom: 1rem;
+  padding-bottom: 1rem;
 }
 .card-slider {
   display: flex;
@@ -101,14 +103,14 @@ h3 {
 }
 
 .border-around {
-    border: 1px solid black;
-    max-width: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  border: 1px solid black;
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .chosen-boarder {
-  border: 2px solid blue;  
+  border: 2px solid blue;
 }
 </style>
