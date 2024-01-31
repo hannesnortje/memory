@@ -24,7 +24,13 @@
       />
     </div>
     <StartDialog v-if="controlDialoge" @close-event="closeStartDialog" @start-event="startGame" />
-    <EndDialog v-if="endDialog" :winner="winner" :score="score" @next-step="nextStep" />
+    <EndDialog
+      v-if="endDialog"
+      :winner="winner"
+      :score="score"
+      @next-step="nextStep"
+      :number-of-players="numberOfPlayers"
+    />
   </div>
 </template>
 
