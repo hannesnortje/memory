@@ -3,34 +3,38 @@
   <div class="overlay">
     <div class="dialog">
       <div>
-        <h2>Welcome to Memory!</h2>
-        <label>
-          Number of players:
-          <select v-model="numberOfPlayers">
-            <option value="1">One Player</option>
-            <option value="2">Two Players</option>
-          </select>
-        </label>
-
-        <div v-if="numberOfPlayers === '1'">
+        <h2>Memory Start Dialogue</h2>
+        <div class="mb-1">
           <label>
-            Player 1 Name:
-            <input v-model="player1Name" type="text" />
+            Number of players:
+            <select v-model="numberOfPlayers">
+              <option value="1">One Player</option>
+              <option value="2">Two Players</option>
+            </select>
           </label>
         </div>
 
-        <div v-else-if="numberOfPlayers === '2'">
-          <label>
-            Player 1 Name:
-            <input v-model="player1Name" type="text" />
-          </label>
-          <label>
-            Player 2 Name:
-            <input v-model="player2Name" type="text" />
-          </label>
+        <div class="mb-1">
+          <div v-if="numberOfPlayers === '1'">
+            <label>
+              Player 1 Name:
+              <input v-model="player1Name" type="text" />
+            </label>
+          </div>
+
+          <div v-else-if="numberOfPlayers === '2'">
+            <label>
+              Player 1 Name:
+              <input v-model="player1Name" type="text" />
+            </label>
+            <label>
+              Player 2 Name:
+              <input v-model="player2Name" type="text" />
+            </label>
+          </div>
         </div>
 
-        <div>
+        <div class="mb-1">
           <label>
             Please give a even number min 10 and max 50 for size of game:
             <input type="number" v-model.number="numSize" @change="error = false" />
@@ -38,13 +42,15 @@
           </label>
         </div>
 
-        <div>
+        <div class="flex-horz">
           <CardSlider :cards="useCardStore().getBacks()" @chosen-card="chosenBack"></CardSlider>
-        </div>
 
-        <button @click="startGame">Start Game</button>
+          <div class="flex-vert">
+            <button @click="startGame">Start Game</button>
+            <button @click="close">Close</button>
+          </div>
+        </div>
       </div>
-      <button @click="close">Close</button>
     </div>
   </div>
 </template>
@@ -95,6 +101,32 @@ const close = () => {
 </script>
 
 <style scoped>
+h2 {
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.7rem;
+  margin-bottom: 1.5rem;
+}
+
+button {
+  padding: 10px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
 .overlay {
   position: fixed;
   top: 0;
@@ -116,5 +148,17 @@ const close = () => {
 
 .font-red {
   color: red;
+}
+
+.flex-horz {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.flex-vert {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 </style>

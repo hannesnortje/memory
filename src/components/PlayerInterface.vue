@@ -1,7 +1,8 @@
 <template>
   <section class="flex-section">
     <div>
-      <h2>Players</h2>
+      <h2 v-if="numberOfPlayers > 1">Players</h2>
+      <h2 v-else>Player</h2>
     </div>
     <div class="flex-playbox">
       <span :class="{ active: player1Active }"
@@ -111,6 +112,7 @@ h2 {
   text-decoration: underline;
   text-underline-offset: 0.5rem;
   font-weight: 700;
+  margin-bottom: 2rem;
 }
 .flex-playbox {
   display: flex;

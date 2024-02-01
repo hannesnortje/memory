@@ -2,7 +2,12 @@
   <div class="border-around">
     <h3>Choose Back Image</h3>
     <div class="card-slider">
-      <img src="/src/components/icons/arrow_back.svg" alt="Icon Back" @click="goBack" />
+      <img
+        v-if="currentIndex > 0"
+        src="/src/components/icons/arrow_back.svg"
+        alt="Icon Back"
+        @click="goBack"
+      />
 
       <div class="card" v-element-hover="onHover">
         <img
@@ -14,7 +19,12 @@
         />
       </div>
 
-      <img src="/src/components/icons/arrow_forward.svg" alt="Icon forward" @click="goForward" />
+      <img
+        v-if="currentIndex < cardFaces.length - 1"
+        src="/src/components/icons/arrow_forward.svg"
+        alt="Icon forward"
+        @click="goForward"
+      />
     </div>
   </div>
 </template>
@@ -80,18 +90,20 @@ const chooseCard = () => {
 <style scoped>
 h3 {
   padding-bottom: 1rem;
+  font-weight: 700;
 }
 .card-slider {
   display: flex;
   align-items: center;
   padding-bottom: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1rem;
 }
 
 .card {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
   padding: 20px;
   cursor: pointer;
 }
@@ -99,18 +111,20 @@ h3 {
 .card img {
   height: 150px;
   width: auto;
-  padding: 0.5rem;
 }
 
 .border-around {
   border: 1px solid black;
-  max-width: 200px;
+  border-radius: 5px;
+  max-width: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .chosen-boarder {
-  border: 2px solid blue;
+  border: 5px solid #3498db;
+  border-radius: 10px;
+  padding: 0.5rem;
 }
 </style>

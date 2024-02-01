@@ -6,8 +6,11 @@
         Congratulations {{ winner }} you won with a score of {{ score }}!!!!
       </p>
       <p v-else>Congratulations {{ winner }} you complete this round!!!!</p>
-      <button @click="nextStep('playAgain')">Play Again</button>
-      <button @click="nextStep('startOver')">Start All Over</button>
+      <div class="flex">
+        <button @click="nextStep('playAgain')">Play Again</button>
+        <button @click="nextStep('startOver')">Start All Over</button>
+        <button @click="endGame">End Game</button>
+      </div>
     </div>
   </div>
 </template>
@@ -36,9 +39,30 @@ const emits = defineEmits(['nextStep']);
 const nextStep = (step: string) => {
   emits('nextStep', step);
 };
+
+const endGame = () => {
+  window.open('/', '_self');
+};
 </script>
 
 <style scoped>
+p {
+  font-weight: 900;
+  font-size: 2rem;
+}
+
+button {
+  padding: 10px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
 .overlay {
   position: fixed;
   top: 0;
@@ -60,5 +84,11 @@ const nextStep = (step: string) => {
 
 .font-red {
   color: red;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 </style>
