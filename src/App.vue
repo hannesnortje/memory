@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <template #header>
-      <header>
+      <header v-if="$route.name !== 'imprint'">
         <nav>
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/board">Start a Game</RouterLink>
@@ -9,29 +9,29 @@
         </nav>
       </header>
     </template>
-      
-      <main>
-        <RouterView />
-      </main>
-    <template #footer>
 
-      <footer>
-        <p>&copy; {{ new Date().getFullYear() }} Hannes Nortjé - Memory Game. All rights reserved.</p>
+    <main>
+      <RouterView />
+    </main>
+    <template #footer>
+      <footer v-if="$route.name !== 'imprint'">
+        <FooterElement></FooterElement>
       </footer>
     </template>
   </Layout>
 </template>
 
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router';
 import Layout from './components/Layout.vue';
 import { useCardStore } from '@/stores/useCardStore';
 import { onMounted } from 'vue';
+import FooterElement from './components/FooterElement.vue';
 
-onMounted(()=>{
+onMounted(() => {
   useCardStore().fetchDeck();
   useCardStore().fetchBacks();
-})
+});
 </script>
 
 <style scoped>
