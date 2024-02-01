@@ -1,11 +1,15 @@
-import { defineStore } from 'pinia'
-import { getAllCards, getAllBacks } from "@/composables/api/getApi.js"
-import { shuffleArray} from "@/composables/tools.js"
+import { defineStore } from 'pinia';
+import { getAllCards, getAllBacks } from '@/composables/api/getApi.js';
+import { shuffleArray } from '@/composables/tools.js';
 
 export const useCardStore = defineStore('cardStore', {
   state: () => ({
     deck: [],
     backs: [],
+    highScore: {
+      score: 0,
+      name: ''
+    }
   }),
 
   actions: {
@@ -18,13 +22,22 @@ export const useCardStore = defineStore('cardStore', {
       }
     },
 
-    getDeck(){
+    setHighScore(highScore: number | string, highName: string) {
+      this.highScore.score = +highScore;
+      this.highScore.name = highName;
+    },
+
+    getHightScore() {
+      return this.highScore;
+    },
+
+    getDeck() {
       return this.deck;
     },
 
-    getSupDeckIndexs(num:number, min=1, max=54) {
+    getSupDeckIndexs(num: number, min = 1, max = 54) {
       const initialNumbers = new Set();
-      while(initialNumbers.size < (num / 2)) {
+      while (initialNumbers.size < num / 2) {
         const number = ~~(Math.random() * (max - min + 1) + min);
         initialNumbers.add(number);
       }
@@ -42,8 +55,8 @@ export const useCardStore = defineStore('cardStore', {
       }
     },
 
-    getBacks(){
+    getBacks() {
       return this.backs;
     }
-  },
+  }
 });

@@ -7,9 +7,12 @@
         src="/src/components/icons/arrow_back.svg"
         alt="Icon Back"
         @click="goBack"
+        class="cursor"
+        v-element-hover="onHoverBack"
+        ref="isBack"
       />
 
-      <div class="card" v-element-hover="onHover">
+      <div class="card cursor" v-element-hover="onHover">
         <img
           :src="cardFaces[currentIndex]"
           :alt="cardNames[currentIndex]"
@@ -24,6 +27,9 @@
         src="/src/components/icons/arrow_forward.svg"
         alt="Icon forward"
         @click="goForward"
+        class="cursor"
+        v-element-hover="onHoverForward"
+        ref="isForward"
       />
     </div>
   </div>
@@ -37,7 +43,7 @@ const props = defineProps({
   cards: {
     type: Object,
     required: true,
-    default: {}
+    default: () => {}
   }
 });
 
@@ -48,6 +54,26 @@ const onHover = (state: boolean) => {
     picture.value.style.transform = 'scale(1.2)';
   } else {
     picture.value.style.transform = 'scale(1)';
+  }
+};
+
+const isBack = ref();
+
+const onHoverBack = (state: boolean) => {
+  if (state) {
+    isBack.value.style.transform = 'scale(1.2)';
+  } else {
+    isBack.value.style.transform = 'scale(1)';
+  }
+};
+
+const isForward = ref();
+
+const onHoverForward = (state: boolean) => {
+  if (state) {
+    isForward.value.style.transform = 'scale(1.2)';
+  } else {
+    isForward.value.style.transform = 'scale(1)';
   }
 };
 
@@ -105,7 +131,6 @@ h3 {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  cursor: pointer;
 }
 
 .card img {
@@ -126,5 +151,9 @@ h3 {
   border: 5px solid #3498db;
   border-radius: 10px;
   padding: 0.5rem;
+}
+
+.cursor {
+  cursor: pointer;
 }
 </style>

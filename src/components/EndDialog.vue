@@ -6,7 +6,12 @@
         Congratulations {{ winner }} you won with a score of {{ score }}!!!!
       </p>
       <p v-else>Congratulations {{ winner }} you complete this round!!!!</p>
-      <div class="flex">
+      <div v-if="score > oldScore" class="flex-horz m-2 font">
+        <span>
+          Congratulations we have a new Hight Score. The last High Score was {{ oldScore }}
+        </span>
+      </div>
+      <div class="flex-vert">
         <button @click="nextStep('playAgain')">Play Again</button>
         <button @click="nextStep('startOver')">Start All Over</button>
         <button @click="endGame">End Game</button>
@@ -31,6 +36,10 @@ const props = defineProps({
     type: Number,
     required: true,
     default: 1
+  },
+  oldScore: {
+    type: Number,
+    default: 0
   }
 });
 
@@ -63,6 +72,15 @@ button {
   cursor: pointer;
   border-radius: 5px;
 }
+
+.m-2 {
+  margin: 2rem;
+}
+
+.font {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
 .overlay {
   position: fixed;
   top: 0;
@@ -86,7 +104,13 @@ button {
   color: red;
 }
 
-.flex {
+.flex-horz {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.flex-vert {
   display: flex;
   flex-direction: column;
   gap: 10px;

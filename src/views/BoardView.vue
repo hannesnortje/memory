@@ -30,6 +30,7 @@
       :score="score"
       @next-step="nextStep"
       :number-of-players="numberOfPlayers"
+      :old-score="highScore"
     />
   </div>
 </template>
@@ -42,6 +43,7 @@ import { onMounted, ref, type Ref } from 'vue';
 import { useTimeoutFn } from '@vueuse/core';
 import PlayerInterface from '@/components/PlayerInterface.vue';
 import EndDialog from '@/components/EndDialog.vue';
+import { checkIfHighScore } from '@/composables/localStorage';
 
 interface KeyValue {
   [key: string]: string;
@@ -68,6 +70,8 @@ const winner = ref();
 const score = ref();
 const endDialog = ref(false);
 
+const oldScore = ref();
+
 let delayCal = -2;
 
 const animationDelay = () => {
@@ -78,6 +82,7 @@ const animationDelay = () => {
 const theWinner = (winnerName: string, winnerScore: number) => {
   winner.value = winnerName;
   score.value = winnerScore;
+  oldScore.value = checkIfHighScore(winnerScore, winnerName);
   endDialog.value = true;
 };
 

@@ -2,15 +2,17 @@
   <main class="flex">
     <div class="flex">
       <h2>
-        Welcome to Memory. Click the following link to start a game, alternatively use the menu
+        Welcome to Memory. Click the following button to start a game, alternatively use the menu
         above
       </h2>
+      <p><ShowHighScore /></p>
       <button @click="navigateToBoard" class="btn">Start a Game</button>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
+import ShowHighScore from '@/components/ShowHighScore.vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
